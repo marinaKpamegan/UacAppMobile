@@ -1,0 +1,58 @@
+ [
+  {
+    "name": "Ecole Nationale d'Administration et de Magistrature",
+    "description": "ENAM",
+    "type": "Université",
+    "lat": 6.418554,
+    "lng": 2.343079
+  },
+
+  {
+    "name": "Arret Bus",
+    "description": "Arret bus de l'UAC",
+    "type": "Transport",
+    "lat": 6.413437,
+    "lng": 2.341979
+  },
+
+  {
+    "name": "Biblothèque Centre de Documentation",
+    "description": "Bibliothèque FSA",
+    "type": "Library",
+    "lat": 6.4165,
+    "lng": 2.340
+  },
+
+   {
+     "name": "Institut de Formation et de Recherche en Informatique",
+     "description": "IFRI",
+     "type": "Université",
+     "lat": 6.41611,
+     "lng": 2.34008
+   },
+
+
+   {
+    "name": "Rectorat",
+    "description": "Rectorat principal de l'UAC",
+    "type": "Rectorat",
+    "lat": 6.415,
+    "lng": 2.34345
+  },
+
+   {
+     "name": "Rectorat Annexe",
+     "description": "Rectorat Annexe de l'UAC",
+     "type": "Rectorat",
+     "lat": 6.415,
+     "lng": 2.34445
+   },
+
+  {
+    "name": "Restaurant Universitaire 1",
+    "description": "Restau",
+    "type": "Restaurant",
+    "lat": 6.414098,
+    "lng": 2.343014
+  }
+]
