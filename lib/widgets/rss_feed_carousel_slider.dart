@@ -1,6 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:uac_campus/utils/color_palette.dart';
 import 'package:webfeed/webfeed.dart';
 
 
@@ -13,11 +14,13 @@ class RssFeedCarousel extends StatefulWidget {
 
 class _RssFeedCarouselState extends State<RssFeedCarousel> {
   RssFeed feeds;
+  int length = 1;
   @override
   void initState() {
     super.initState();
-    if(widget.rssFeed != null){
+    if(widget.rssFeed.items != null){
       feeds = widget.rssFeed;
+      length = feeds.items.length;
     }
   }
   @override
@@ -26,13 +29,21 @@ class _RssFeedCarouselState extends State<RssFeedCarousel> {
     return Stack(
         children: [
           CarouselSlider(
-              options: CarouselOptions(),
+              options: CarouselOptions(
+                autoPlay: true,
+                enlargeCenterPage: true,
+                viewportFraction: 0.95,
+                aspectRatio: 2.0,
+              ),
               items: List.generate(
-                  feeds.items.length,
+                  length,
                       (i) => Center(
                     child:
                     Container(
-                      color: Color.fromRGBO(4, 57, 102, 1),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        color: ColorPalette.blue.colorPalette,
+                      ),
                       child: Container(
                         padding: EdgeInsets.only(left: 25, right: 25),
                         alignment: Alignment.center,

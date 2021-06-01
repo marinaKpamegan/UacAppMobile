@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:uac_campus/map/map.dart';
 import 'package:uac_campus/middle_page.dart';
 import 'package:uac_campus/models/uac_locations.dart';
+import 'package:uac_campus/utils/color_palette.dart';
 import 'package:uac_campus/widgets/rss_feed_carousel_slider.dart';
 import 'package:uac_campus/services/rss_feed.dart';
 import 'package:uac_campus/settings/settings.dart';
@@ -40,13 +41,15 @@ class MenuState extends State<Menu>{
     final Color globalColor = Color.fromRGBO(4, 57, 102, 1);
     UacLocation rectorat = new UacLocation("Rectorat Annexe", "Rectorat Annexe de l'UAC", 6.415, 2.34345, "Rectorat");
     int selectedIndex;
+    final Color grey = Color.fromRGBO(238, 238, 238, 1.0);
     // tiles list initialization
     List<_MenuTile> _menuTiles = [
-      _MenuTile("map 1.png", "Carte", Color.fromRGBO(9, 113, 52, 1),/*UacMap(rectorat)*/ null),
-      _MenuTile("website.png", "UAC", Color.fromRGBO(16, 135, 87, 1),WebPageContainer("UAC", "https://uac.bj/")),
-      _MenuTile("graduate 1.png", "Mes Etudes", Color.fromRGBO(35, 154, 105, 1), StudentFiche()),// replace by Middle Page
-      _MenuTile("capmenu.png", "Moodle", Color.fromRGBO(15, 162, 76, 1), WebPageContainer("Moodle", "https://elearning.uac.bj/")),
-      _MenuTile("earth-grid 1.png", "Web TV", Color.fromRGBO(9, 113, 52, 1), WebPageContainer("Web TV", "https://webtv.uac.bj/")),
+      _MenuTile("map 1.png", "Carte", ColorPalette.blue.colorPalette,/*UacMap(rectorat)*/ null),
+      _MenuTile("website.png", "UAC", ColorPalette.blue.colorPalette, WebPageContainer("UAC", "https://uac.bj/")),
+      _MenuTile("graduate 1.png", "Mes Etudes", ColorPalette.blue.colorPalette, StudentFiche()),// replace by Middle Page
+      _MenuTile("capmenu.png", "Moodle",ColorPalette.blue.colorPalette, WebPageContainer("Moodle", "https://elearning.uac.bj/")),
+      _MenuTile("earth-grid 1.png", "Web TV", ColorPalette.blue.colorPalette, WebPageContainer("Web TV", "https://webtv.uac.bj/")),
+      _MenuTile("website.png", "Social", ColorPalette.blue.colorPalette, WebPageContainer("UAC", "https://uac.bj/")),
     ];
 
 
@@ -56,9 +59,9 @@ class MenuState extends State<Menu>{
             'UAC Campus',
             style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black),
           ),
+          backgroundColor: Colors.white,
           centerTitle: false,
           elevation: 0,
-          backgroundColor: Colors.white,
           actions: [
             Container(
               width: 50,
@@ -102,10 +105,13 @@ class MenuState extends State<Menu>{
                             return RssFeedCarousel(feed);
                           }else if(snapshot.hasError){
                             return Container(
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                                color: Color.fromRGBO(4, 57, 102, 1),
+                              ),
                               alignment: Alignment.center,
                               height: 200,
                               width: MediaQuery.of(context).size.width - 10,
-                              color: Color.fromRGBO(4, 57, 102, 1),
                               child: Container(
                                   alignment: Alignment.center,
                                   child: Container(
@@ -119,7 +125,10 @@ class MenuState extends State<Menu>{
                             return Container(
                               height: 200,
                               width: MediaQuery.of(context).size.width - 10,
-                              color: Color.fromRGBO(4, 57, 102, 1),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                                color: Color.fromRGBO(4, 57, 102, 1),
+                              ),
                               child: Container(
                                 alignment: Alignment.center,
                                 child: Container(
@@ -135,22 +144,23 @@ class MenuState extends State<Menu>{
                   ),
                   Positioned(
                     top: 25,
-                    left: 15,
+                    left: 20,
                     child: Container(
                       alignment: Alignment.center,
-                      width: 90,
+                      width: 60,
                       padding: EdgeInsets.symmetric(vertical: 5),
-                      child:  Text("News", style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold)),
+                      child:  Text("News", style: TextStyle(color: Colors.white, fontSize: 13, fontWeight: FontWeight.bold)),
                       color: Color.fromRGBO(35, 154, 105, 1),
                     ),
                   ),
                 ],
               ),
-              SizedBox(height: 5,),
+              SizedBox(height: 15,),
               Container(
-                  padding: EdgeInsets.only(top: 15),
-                  child: GridView.count(
-                    crossAxisCount: 3,
+                color: Colors.white,
+                padding: EdgeInsets.only(top: 15),
+                child: GridView.count(
+                    crossAxisCount: 2,
                     shrinkWrap: true,
                     padding: EdgeInsets.all(15),
                     children: List.generate(_menuTiles.length, (index){
@@ -163,7 +173,6 @@ class MenuState extends State<Menu>{
             ],
           ),
         ),
-        backgroundColor: Colors.white,
     );
   }
 
@@ -181,57 +190,57 @@ class _MenuTile extends StatelessWidget{
 
   @override
   Widget build(BuildContext context) {
-     return InkWell(
-       child: Card(
-         margin: EdgeInsets.all(10),
-         elevation: 15,
-         shape: RoundedRectangleBorder(
-           borderRadius: BorderRadius.circular(8),
-         ),
-         shadowColor: Colors.blueAccent.withOpacity(0.3),
-         color: color,
-         child: Column(
-           mainAxisAlignment: MainAxisAlignment.center,
-           children: [
-             SizedBox(height: 10,),
-             Image.asset("assets/images/icons/$iconData", width: 30, height: 30),
-             SizedBox(height: 8,),
-             Text(text, style: TextStyle(color: Colors.white, fontSize: 15),),
-             SizedBox(height: 20,),
-           ],
-         ),
-       ),
-       onTap: (){
-         Navigator.push(
-             context,
-             PageRouteBuilder(
-                 transitionDuration: Duration(milliseconds: 400),
-                 pageBuilder: (
-                     BuildContext context,
-                     Animation<double> animation,
-                     Animation<double> secondaryAnimation) {
-                   return target;
-                 },
-                 transitionsBuilder: (
-                     BuildContext context,
-                     Animation<double> animation,
-                     Animation<double> secondaryAnimation,
-                     Widget child,
-                     ) {
+    return InkWell(
+      child: Card(
+        margin: EdgeInsets.all(10),
+        elevation: 15,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10),
+        ),
+        shadowColor: Colors.blueAccent.withOpacity(0.3),
+        color: color,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            SizedBox(height: 20,),
+            Image.asset("assets/images/icons/$iconData", width: 60, height: 60),
+            SizedBox(height: 15,),
+            Text(text, style: TextStyle(color: Colors.white, fontSize: 18),),
+            SizedBox(height: 20,),
+          ],
+        ),
+      ),
+      onTap: (){
+        Navigator.push(
+            context,
+            PageRouteBuilder(
+                transitionDuration: Duration(milliseconds: 400),
+                pageBuilder: (
+                    BuildContext context,
+                    Animation<double> animation,
+                    Animation<double> secondaryAnimation) {
+                  return target;
+                },
+                transitionsBuilder: (
+                    BuildContext context,
+                    Animation<double> animation,
+                    Animation<double> secondaryAnimation,
+                    Widget child,
+                    ) {
 
-                   return  SlideTransition(
-                     position: Tween<Offset>(
-                       begin: const Offset(0, 1),
-                       end: Offset.zero,
-                     ).animate(animation),
-                     child: child,
-                   );
-                 }
+                  return  SlideTransition(
+                    position: Tween<Offset>(
+                      begin: const Offset(0, 1),
+                      end: Offset.zero,
+                    ).animate(animation),
+                    child: child,
+                  );
+                }
 
-             )
-         );
-       },
-     );
+            )
+        );
+      },
+    );
   }
 }
 

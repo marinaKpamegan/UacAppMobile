@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_icons/flutter_icons.dart';
 import 'package:uac_campus/menu.dart';
 import 'package:uac_campus/widgets/widgets.dart';
 import '../student/about_validation_pages/student_validation.dart';
@@ -53,19 +54,6 @@ Widget CustomDrawer(BuildContext context, String currentRoute){
           ),
           Container(
             margin: EdgeInsets.symmetric(horizontal: 8),
-            child: ListTile(
-              title: Text('Acceuil'),
-              leading: Icon(Icons.home_sharp),
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => Menu()),
-                );
-              },
-            ),
-          ),
-          Container(
-            margin: EdgeInsets.symmetric(horizontal: 8),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(30),
               color: currentRoute == "/fiche" ? active: null
@@ -90,7 +78,7 @@ Widget CustomDrawer(BuildContext context, String currentRoute){
             ),
             child: ListTile(
               title: Text('Inscriptions'),
-              leading: Icon(Icons.done_all, color: Colors.black,),
+              leading: Icon(Icons.view_list_outlined, color: Colors.black,),
               onTap: () {
                 Navigator.pushNamed(context, "/validation");
               },
@@ -104,7 +92,7 @@ Widget CustomDrawer(BuildContext context, String currentRoute){
               ),
             child: ListTile(
               title: Text('Programmes'),
-              leading: Image.asset("$iconPath/educational-programs.png", width: 20, height: 20,),
+              leading: Icon(Icons.today_outlined, color: Colors.black,),
               onTap: () {
                 Navigator.pushNamed(context, "/validation");
               },
@@ -118,7 +106,7 @@ Widget CustomDrawer(BuildContext context, String currentRoute){
             ),
             child: ListTile(
               title: Text('Parcours académique'),
-              leading: Image.asset("$iconPath/educational-programs.png", width: 20, height: 20,),
+              leading: Icon(Icons.public_outlined, color: Colors.black,),
               onTap: () {
                 Navigator.pushNamed(context, "/validation");
               },
@@ -132,7 +120,7 @@ Widget CustomDrawer(BuildContext context, String currentRoute){
              ),
            child:  ListTile(
              title: Text('Sanctions'),
-             leading: Image.asset("$iconPath/auction.png", width: 20, height: 20,),
+             leading: Icon(Icons.public_outlined, color: Colors.black,),
              onTap: () {
                Navigator.pushNamed(context, "/validation");
              },
@@ -146,7 +134,7 @@ Widget CustomDrawer(BuildContext context, String currentRoute){
               ),
             child: ListTile(
               title: Text('Comptabilités'),
-              leading: Image.asset("$iconPath/school.png", width: 20, height: 20,),
+              leading: Icon(Icons.account_balance_wallet_outlined, color: Colors.black,),
               onTap: () {
                 Navigator.push(
                   context,
@@ -155,17 +143,31 @@ Widget CustomDrawer(BuildContext context, String currentRoute){
               },
             )
           ),
-
           Container(
-            margin: EdgeInsets.only(top: height > 700 ? height - 680 : height - 500),
-            alignment: Alignment.bottomLeft,
-            child: ListTile(
-              leading: Image.asset("$iconPath/logout.png", width: 20, height: 20,),
-              title: Text('Déconnexion'),
-              onTap: () {
-                Navigator.pushNamed(context, "/validation");
-              },
-            ),
+              margin: EdgeInsets.symmetric(horizontal: 8),
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(30),
+                  color: null
+              ),
+              child: ListTile(
+                title: Text('Déconnexion'),
+                leading: Icon(Icons.login_outlined, color: Colors.black,),
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => Menu()),
+                  );
+                },
+              )
+          ),
+
+          Positioned(
+            bottom: 30,
+              child: FloatingActionButton(
+                backgroundColor: Color.fromRGBO(35, 154, 105, 1),
+                onPressed: () { Navigator.pop(context); },
+                child: Icon(Icons.close_outlined, color: Colors.white,),
+              )
           )
         ],
       ),
