@@ -2,17 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:uac_campus/forum/forum.dart';
 import 'package:uac_campus/menu.dart';
 import 'package:uac_campus/student/about_identity_pages/student_fiche.dart';
+import 'package:uac_campus/utils/color_palette.dart';
 
 
 // ignore: non_constant_identifier_names
 Widget BottomNavigationBarWidget(BuildContext context, int currentIndex)  {
   List<Widget> pages = [
-    Menu(),
+    Forum(),
     StudentFiche(),
-    Forum()
+    Menu()
   ];
   return BottomNavigationBar(
-    selectedItemColor: Color.fromRGBO(35, 154, 105, 1.0),
+    selectedItemColor: ColorPalette.blueGreen.colorPalette,
     currentIndex: currentIndex,
     onTap: (index) {
       Navigator.push(context, MaterialPageRoute(builder: (context) => pages.elementAt(currentIndex)));

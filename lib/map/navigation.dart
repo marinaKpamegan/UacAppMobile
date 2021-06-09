@@ -1,4 +1,4 @@
-/*
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -7,6 +7,8 @@ import 'package:uac_campus/map/map.dart';
 import 'package:uac_campus/map/search_page.dart';
 import 'package:uac_campus/models/uac_locations.dart';
 import 'package:location/location.dart';
+
+import 'mapbox_navigation.dart';
 
 class Navigation extends StatefulWidget{
 
@@ -276,7 +278,7 @@ class NavigationState extends State<Navigation> {
             Navigator.push(
                 context,
                 MaterialPageRoute(
-                    builder: (context) => userLocation != null ? UacMap(userLocation, targetLocation: targetLocation, startNavigation: true, mapBoxNavigationMode: _mapBoxNavigationMode,) : null
+                    builder: (context) => userLocation != null ?  UacNavigation(WayPoint(name: "User Location", longitude: userLocation.lng, latitude: userLocation.lat), WayPoint(name: "User Location", longitude: targetLocation.lng, latitude: targetLocation.lat), _mapBoxNavigationMode) /* UacMap(userLocation, targetLocation: targetLocation, startNavigation: true, mapBoxNavigationMode: _mapBoxNavigationMode,) */: null
                 )
             );
           },
@@ -336,8 +338,6 @@ class NavigationState extends State<Navigation> {
   }
 
 }
-
-*/
 
 
 

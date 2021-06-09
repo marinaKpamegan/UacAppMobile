@@ -1,8 +1,8 @@
-import 'package:bottom_navy_bar/bottom_navy_bar.dart';
 import 'package:buttons_tabbar/buttons_tabbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:uac_campus/student/about_identity_pages/student_identity.dart';
+import 'package:uac_campus/utils/color_palette.dart';
 import 'package:uac_campus/utils/list_item.dart';
 import 'package:uac_campus/widgets/bottom_navigation_bar.dart';
 import 'package:uac_campus/widgets/custom_app_bar.dart';
@@ -355,17 +355,18 @@ class _StudentFicheState extends State<StudentFiche> {
               SizedBox(height: 15,),
               Center(
                 child: ButtonsTabBar(
-                    backgroundColor: Colors.black,
-                    unselectedBackgroundColor: Colors.white,
-                    labelStyle:
-                    TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-                    unselectedLabelStyle: TextStyle(
-                        color: Colors.black, fontWeight: FontWeight.bold),
-                    borderWidth: 1,
-                    unselectedBorderColor: Colors.black12,
-                    contentPadding: EdgeInsets.symmetric(horizontal:15),
-                    radius: 100,
-                    tabs: tabs,
+                  backgroundColor: ColorPalette.blueGreen.colorPalette,
+                  unselectedBackgroundColor: Colors.white,
+                  labelStyle:
+                  TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                  unselectedLabelStyle: TextStyle(
+                      color: Colors.black, fontWeight: FontWeight.bold),
+                  unselectedBorderColor: Colors.black12,
+                  contentPadding: EdgeInsets.symmetric(horizontal:15),
+                  radius: 100,
+                  borderWidth: 1,
+                  borderColor: ColorPalette.blueGreen.colorPalette,
+                  tabs: tabs,
                 ),
               ),
               SizedBox(height: 20,),

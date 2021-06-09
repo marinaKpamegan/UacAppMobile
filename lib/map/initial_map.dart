@@ -4,15 +4,12 @@ import 'dart:convert';
 import 'package:flutter/services.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_mapbox_navigation/library.dart';
-import 'package:mapbox_gl/mapbox_gl.dart';
 import 'package:uac_campus/map/discovery.dart';
-import 'package:uac_campus/map/mapbox_navigation.dart';
 import 'package:uac_campus/menu.dart';
 import 'package:uac_campus/models/uac_locations.dart';
 import 'package:location/location.dart';
+import 'package:latlong/latlong.dart';
 import 'package:uac_campus/map/search_page.dart';
-
-import 'navigation.dart';
 
 
 class UacMap extends StatefulWidget {
@@ -34,7 +31,11 @@ class UacMap extends StatefulWidget {
 // mapbox key and template access
 String url = "https://api.mapbox.com/styles/v1/evidya/ckddkpbqa473t1in2wu316ngi/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoiZXZpZHlhIiwiYSI6ImNrY29uY2NpeTBtdHUycmxodWExZWtkbG0ifQ.ZZAzRAU-f-4FDLGlF4El6w";
 String key = 'pk.eyJ1IjoiZXZpZHlhIiwiYSI6ImNrY29uY2NpeTBtdHUycmxodWExZWtkbG0ifQ.ZZAzRAU-f-4FDLGlF4El6w';
-
+bool _isMultipleStop = false;
+double _distanceRemaining, _durationRemaining;
+MapBoxNavigationViewController _mapController;
+bool _routeBuilt = false;
+bool _isNavigating = false;
 
 class MapState extends State<UacMap> {
 
@@ -52,6 +53,19 @@ class MapState extends State<UacMap> {
     "User": "assets/markers/location.png",
   };
 
+  // Navigation and location
+
+  String _platformVersion = 'Unknown';
+  String _instruction = "";
+  WayPoint _origin;
+
+  WayPoint _destination;
+
+  MapBoxNavigation _directions;
+  MapBoxOptions _options;
+
+  bool _arrived = false;
+  double _distanceRemaining, _durationRemaining;
   bool _isVisible = false;
   var location = Location();
   bool enabled = false;
@@ -61,40 +75,78 @@ class MapState extends State<UacMap> {
   // markers
   var markers = <Marker>[];
   GlobalKey _globalKey = GlobalKey();
-  LatLng result = new LatLng(0.0, 0.0);
 
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       enabled = await location.serviceEnabled();
-      result = await acquireCurrentLocation();
       initializeList();
+      initialize();
     });
+    if (widget.startNavigation == true) {
+      _origin = WayPoint(name: widget.selectedLocation.name,
+          latitude: widget.selectedLocation.lat,
+          longitude: widget.selectedLocation.lng);
+      _destination = WayPoint(name: widget.targetLocation.name,
+          latitude: widget.targetLocation.lat,
+          longitude: widget.targetLocation.lng);
+      _isVisible = true;
+      markers.add(
+          new Marker(
+              point: LatLng(
+                  widget.selectedLocation.lat, widget.selectedLocation.lng),
+              builder: (ctx) =>
+                  InkWell(
+                    child: Container(
+                        child: Image.asset(
+                          placesIcon[widget.selectedLocation.type], width: 150,
+                          height: 192,)
+                    ),
+                    onTap: () {
+                      print(widget.selectedLocation.description);
+                      setState(() {
+
+                      });
+                    },
+                  )
+          )
+      );
+    }
+    _mapController = MapController();
   }
 
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       body: SafeArea(
         child: Stack(
           children: <Widget>[
             // map
             SafeArea(
-              child:  MapboxMap(
-                accessToken: key,
-               // styleString: url,
-                initialCameraPosition: CameraPosition(
-                  zoom: 15.0,
-                  target: LatLng(14.508, 46.048),
+              child: FlutterMap(
+                mapController: _mapController,
+                options: MapOptions(
+                  center: LatLng(
+                      widget.selectedLocation.lat, widget.selectedLocation.lng),
+                  minZoom: 10,
+                  maxZoom: 18.5,
+                  zoom: 18.0,
                 ),
-                onMapCreated: (MapboxMapController controller) async {
-                  await controller.animateCamera(
-                    CameraUpdate.newLatLng(new LatLng(widget.selectedLocation.lat, widget.selectedLocation.lng)),
-                  );
-                },
+                layers: [
+                  TileLayerOptions(
+                    urlTemplate: url,
+                    additionalOptions: {
+                      'accessToken': 'pk.eyJ1IjoiZXZpZHlhIiwiYSI6ImNrY29uY2NpeTBtdHUycmxodWExZWtkbG0ifQ.ZZAzRAU-f-4FDLGlF4El6w',
+                      'id': 'mapbox.mapbox-streets-v7',
+                    },
+
+                    tileProvider: NonCachingNetworkTileProvider(),
+                  ),
+                  MarkerLayerOptions(markers: markers),
+
+                ],
               ),
             ),
             // end map
@@ -134,6 +186,7 @@ class MapState extends State<UacMap> {
                   }
               ),
             ),
+
             //gps location or start navigation
 
             Positioned(
@@ -195,7 +248,7 @@ class MapState extends State<UacMap> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => Navigation(uacPlaces),
+                      builder: (context) => null, //Navigation(uacPlaces),
                     ),
                   );
                 },
@@ -284,8 +337,7 @@ class MapState extends State<UacMap> {
       // print(uacPlaces.length);
       for (int i = 0; i <= uacPlaces.length - 1; i++) {
         markers.add(Marker(
-          // FIXME: Don't forget to fix this
-            // point: LatLng(uacPlaces[i].lat, uacPlaces[i].lng),
+            point: LatLng(uacPlaces[i].lat, uacPlaces[i].lng),
             builder: (ctx) =>
                 InkWell(
                   child: Container(
@@ -306,40 +358,88 @@ class MapState extends State<UacMap> {
     // print(_uacLocation[2].name);
     return 1;
   }
-  Future<LatLng> acquireCurrentLocation() async {
-    // Initializes the plugin and starts listening for potential platform events
-    Location location = new Location();
 
-    // Whether or not the location service is enabled
-    bool serviceEnabled;
+  Future<void> initialize() async {
+    // If the widget was removed from the tree while the asynchronous platform
+    // message was in flight, we want to discard the reply rather than calling
+    // setState to update our non-existent appearance.
+    if (!mounted) return;
 
-    // Status of a permission request to use location services
-    PermissionStatus permissionGranted;
+    _directions = MapBoxNavigation(onRouteEvent: _onEmbeddedRouteEvent);
+    _options = MapBoxOptions(
+      //initialLatitude: 36.1175275,
+      //initialLongitude: -115.1839524,
+        zoom: 15.0,
+        tilt: 0.0,
+        bearing: 0.0,
+        enableRefresh: false,
+        alternatives: true,
+        voiceInstructionsEnabled: true,
+        bannerInstructionsEnabled: true,
+        allowsUTurnAtWayPoints: true,
+        mode: MapBoxNavigationMode.drivingWithTraffic,
+        units: VoiceUnits.imperial,
+        simulateRoute: false,
+        animateBuildRoute: true,
+        longPressDestinationEnabled: true,
+        language: "en");
 
-    // Check if the location service is enabled, and if not, then request it. In
-    // case the user refuses to do it, return immediately with a null result
-    serviceEnabled = await location.serviceEnabled();
-    if (!serviceEnabled) {
-      serviceEnabled = await location.requestService();
-      if (!serviceEnabled) {
-        return null;
-      }
+    String platformVersion;
+    // Platform messages may fail, so we use a try/catch PlatformException.
+    try {
+      platformVersion = await _directions.platformVersion;
+    } on PlatformException {
+      platformVersion = 'Failed to get platform version.';
     }
 
-    // Check for location permissions; similar to the workflow in Android apps,
-    // so check whether the permissions is granted, if not, first you need to
-    // request it, and then read the result of the request, and only proceed if
-    // the permission was granted by the user
-    permissionGranted = await location.hasPermission();
-    if (permissionGranted == PermissionStatus.denied) {
-      permissionGranted = await location.requestPermission();
-      if (permissionGranted != PermissionStatus.granted) {
-        return null;
-      }
-    }
-
-    // Gets the current location of the user
-    final locationData = await location.getLocation();
-    return LatLng(locationData.latitude, locationData.longitude);
+    setState(() {
+      _platformVersion = platformVersion;
+    });
   }
+
+  Future<void> _onEmbeddedRouteEvent(e) async {
+    _distanceRemaining = await _directions.distanceRemaining;
+    _durationRemaining = await _directions.durationRemaining;
+
+    switch (e.eventType) {
+      case MapBoxEvent.progress_change:
+        var progressEvent = e.data as RouteProgressEvent;
+        if (progressEvent.currentStepInstruction != null)
+          _instruction = progressEvent.currentStepInstruction;
+        break;
+      case MapBoxEvent.route_building:
+      case MapBoxEvent.route_built:
+        setState(() {
+          _routeBuilt = true;
+        });
+        break;
+      case MapBoxEvent.route_build_failed:
+        setState(() {
+          _routeBuilt = false;
+        });
+        break;
+      case MapBoxEvent.navigation_running:
+        setState(() {
+          _isNavigating = true;
+        });
+        break;
+      case MapBoxEvent.on_arrival:
+        if (!_isMultipleStop) {
+          await Future.delayed(Duration(seconds: 3));
+          // await _controller.finishNavigation();
+        } else {}
+        break;
+      case MapBoxEvent.navigation_finished:
+      case MapBoxEvent.navigation_cancelled:
+        setState(() {
+          _routeBuilt = false;
+          _isNavigating = false;
+        });
+        break;
+      default:
+        break;
+    }
+    setState(() {});
+  }
+
 }

@@ -2,12 +2,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:uac_campus/menu.dart';
+import 'package:uac_campus/utils/color_palette.dart';
 import 'package:uac_campus/widgets/widgets.dart';
 import '../student/about_validation_pages/student_validation.dart';
 
 
 Widget CustomDrawer(BuildContext context, String currentRoute){
-  Color active =  Color.fromRGBO(35, 154, 105, 0.25);
+  Color active =  ColorPalette.blue.colorPalette.withOpacity(0.2);
   String iconPath = "assets/images/icons";
   double height = MediaQuery.of(context).size.height;
   if(currentRoute == null){
@@ -49,7 +50,7 @@ Widget CustomDrawer(BuildContext context, String currentRoute){
               gradient: LinearGradient(
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
-                  colors: [Color.fromRGBO(35, 154, 105, 1), Color.fromRGBO(9, 113, 52, 1)])
+                  colors: [ColorPalette.blue.colorPalette, ColorPalette.blue.colorPalette])
             ),
           ),
           Container(
@@ -60,7 +61,7 @@ Widget CustomDrawer(BuildContext context, String currentRoute){
             ),
             child: ListTile(
               title: Text('Ma fiche'),
-              leading: Image.asset("$iconPath/graduated.png", width: 20, height: 20,),
+              leading: Icon(Icons.school_outlined, color: Colors.black,),
               onTap: () {
                 /*Navigator.push(
                   context,
@@ -120,7 +121,7 @@ Widget CustomDrawer(BuildContext context, String currentRoute){
              ),
            child:  ListTile(
              title: Text('Sanctions'),
-             leading: Icon(Icons.public_outlined, color: Colors.black,),
+             leading: Image.asset('${iconPath}/hammer.png', width: 20, height: 20,),
              onTap: () {
                Navigator.pushNamed(context, "/validation");
              },
@@ -164,7 +165,7 @@ Widget CustomDrawer(BuildContext context, String currentRoute){
           Positioned(
             bottom: 30,
               child: FloatingActionButton(
-                backgroundColor: Color.fromRGBO(35, 154, 105, 1),
+                backgroundColor: ColorPalette.blueGreen.colorPalette,
                 onPressed: () { Navigator.pop(context); },
                 child: Icon(Icons.close_outlined, color: Colors.white,),
               )

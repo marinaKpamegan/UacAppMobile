@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:uac_campus/forum/forum.dart';
 import 'package:uac_campus/map/map.dart';
+import 'package:uac_campus/map/tmp.dart';
 import 'package:uac_campus/middle_page.dart';
 import 'package:uac_campus/models/uac_locations.dart';
 import 'package:uac_campus/utils/color_palette.dart';
@@ -9,7 +11,7 @@ import 'package:uac_campus/services/rss_feed.dart';
 import 'package:uac_campus/settings/settings.dart';
 import 'package:uac_campus/widgets/web_page_opener.dart';
 import 'package:webfeed/webfeed.dart';
-
+import 'map/mapbox_navigation.dart';
 import 'student/about_identity_pages/student_fiche.dart';
 
 
@@ -44,7 +46,7 @@ class MenuState extends State<Menu>{
     final Color grey = Color.fromRGBO(238, 238, 238, 1.0);
     // tiles list initialization
     List<_MenuTile> _menuTiles = [
-      _MenuTile("map 1.png", "Carte", ColorPalette.blue.colorPalette,/*UacMap(rectorat)*/ null),
+      _MenuTile("map 1.png", "Carte", ColorPalette.blue.colorPalette,/*Forum()*/ UacMap(rectorat)),
       _MenuTile("website.png", "UAC", ColorPalette.blue.colorPalette, WebPageContainer("UAC", "https://uac.bj/")),
       _MenuTile("graduate 1.png", "Mes Etudes", ColorPalette.blue.colorPalette, StudentFiche()),// replace by Middle Page
       _MenuTile("capmenu.png", "Moodle",ColorPalette.blue.colorPalette, WebPageContainer("Moodle", "https://elearning.uac.bj/")),
@@ -176,7 +178,7 @@ class MenuState extends State<Menu>{
     );
   }
 
-  Future<RssFeed> callAsyncFetch() => Future.delayed(Duration(seconds: 5), () => UacRssService().getFeed());
+  Future<RssFeed> callAsyncFetch() => Future.delayed(Duration(seconds: 10), () => UacRssService().getFeed());
 
 }
 

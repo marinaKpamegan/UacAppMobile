@@ -5,21 +5,8 @@ class ForumItem{
   String bestReply;
   int replies;
   DateTime time;
+  bool isFavorite = false;
+  String author;
 
-  ForumItem({this.title, this.replier, this.resume, this.bestReply, this.replies, this.time});
+  ForumItem(this.title, this.replier, this.author, this.resume, this.bestReply, this.replies, this.time, this.isFavorite);
 }
-// ForumItem (String title, String resume, String bestReply, int replies, DateTime time)
-/*
-ListView.builder(
-        itemCount: _listViewData.length,
-        itemBuilder: (context, index) => Container(
-              color: _selectedIndex != null && _selectedIndex == index
-                  ? Colors.red
-                  : Colors.white,
-              child: ListTile(
-                title: Text(_listViewData[index]),
-                onTap: () => _onSelected(index),
-              ),
-            ),
-      ),
- */

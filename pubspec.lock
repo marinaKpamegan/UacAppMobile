@@ -43,13 +43,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.1.0"
-  bottom_navy_bar:
-    dependency: "direct main"
-    description:
-      name: bottom_navy_bar
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "6.0.0"
   built_collection:
     dependency: transitive
     description:
@@ -169,34 +162,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "6.1.1"
-  firebase_core:
-    dependency: transitive
-    description:
-      name: firebase_core
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.2.0"
-  firebase_core_platform_interface:
-    dependency: transitive
-    description:
-      name: firebase_core_platform_interface
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "4.0.1"
-  firebase_core_web:
-    dependency: transitive
-    description:
-      name: firebase_core_web
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.1.0"
-  firebase_database:
-    dependency: "direct main"
-    description:
-      name: firebase_database
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "7.0.0"
   fixnum:
     dependency: transitive
     description:
@@ -237,13 +202,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.12.0"
-  flutter_multi_carousel:
+  flutter_mapbox_navigation:
     dependency: "direct main"
     description:
-      name: flutter_multi_carousel
+      name: flutter_mapbox_navigation
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.0.3"
+    version: "0.0.24"
   flutter_secure_storage:
     dependency: "direct main"
     description:
@@ -297,7 +262,7 @@ packages:
     source: hosted
     version: "3.0.2"
   intl:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: intl
       url: "https://pub.dartlang.org"
@@ -317,15 +282,8 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.0.1"
-  latlng:
-    dependency: "direct main"
-    description:
-      name: latlng
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.1.0"
   latlong:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: latlong
       url: "https://pub.dartlang.org"
@@ -366,6 +324,34 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.11.4"
+  mapbox_gl:
+    dependency: "direct main"
+    description:
+      name: mapbox_gl
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.12.0"
+  mapbox_gl_dart:
+    dependency: transitive
+    description:
+      name: mapbox_gl_dart
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.1.5"
+  mapbox_gl_platform_interface:
+    dependency: transitive
+    description:
+      name: mapbox_gl_platform_interface
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.12.0"
+  mapbox_gl_web:
+    dependency: transitive
+    description:
+      name: mapbox_gl_web
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.12.0"
   matcher:
     dependency: transitive
     description:
